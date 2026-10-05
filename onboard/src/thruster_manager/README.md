@@ -6,11 +6,11 @@ This package converts the "percentage" values of each thruster into a PWM for ea
 ## How do I use it?
 **{TODO add launch instructions}**
 
-To configure the thruster PWM limit, publish a single number to the **{TODO pick topic name}** topic. This represents the relative offset from maximum power. On startup, this value defaults to 200, so the lower limit is 1300 (1100 + 200) and the upper limit is 1700 (1900 - 200). Attempting to set a limit offset less than 0 or greater than 400 is ignored and instead sets the limit to either 0 or 400, respectively.
+To configure the thruster PWM limit, publish a single number to the thruster_percents topic. This represents the relative offset from maximum power. On startup, this value defaults to 200, so the lower limit is 1300 (1100 + 200) and the upper limit is 1700 (1900 - 200). Attempting to set a limit offset less than 0 or greater than 400 is ignored and instead sets the limit to either 0 or 400, respectively.
 
 ## What topics/services/actions does the package use for input? **{TODO add more inputs as needed}**
 - Topics:
-    - `topic_name` **{TODO agree on topic name with gamepad_interpreter team}**: power percentage values for each thruster
+    - `thruster_percents` : power percentage values for each thruster
     - `gamepad_interpreter_heartbeat`: heartbeat from the `gamepad_interpreter` node
 
 ## What topics/services/actions does the package use for output? **{TODO add more outputs as needed}**
