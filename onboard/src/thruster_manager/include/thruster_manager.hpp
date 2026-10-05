@@ -8,13 +8,15 @@ public:
     ThrusterManager();
 
 private:
-    void thruster_manager_callback(const std_msgs::msg::String & msg) const;
-    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr subscription;
+    void thruster_manager_callback(const std::list<int> & msg) const;
+    rclcpp::Subscription<std::list<int>>::SharedPtr subscription;
+
+    std::list<int> thruster_pwm;
+    int pwmLimit = 200;
 
     void timer_callback();
-    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher;
+    rclcpp::Publisher<std::list<int>>::SharedPtr publisher;
     rclcpp::TimerBase::SharedPtr timer;
-    size_t count;
     std::chrono::time_point<std::chrono::steady_clock> most_recent_heartbeat;
 };
 

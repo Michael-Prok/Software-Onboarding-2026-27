@@ -1,4 +1,5 @@
 #include <chrono>
+#include <list>
 
 #include "thruster_manager.hpp"
 
@@ -7,11 +8,10 @@ using namespace std::chrono_literals;
 ThrusterManager::ThrusterManager() :
     Node("thruster_manager") {
 
-    subscription = this->create_subscription<std_msgs::msg::String>(
+    subscription = this->create_subscription<std::list<int>>(
     "thruster_percents", 10, std::bind(&ThrusterManager::thruster_manager_callback, this, std::placeholders::_1));
 
-    /* Creates a publisher that publishes a String message to a topic with name "topic" */
-    publisher = this->create_publisher<std_msgs::msg::String>("topic", 10);
+    publisher = this->create_publisher<std::list<int>>("topic", 10);
     /* Creates a timer that triggers every half a second, calling the timer_callback() function
      * every half a second
     */
@@ -19,15 +19,18 @@ ThrusterManager::ThrusterManager() :
     500ms, std::bind(&ThrusterManager::timer_callback, this));
 }
 
-void ThrusterManager::thruster_manager_callback(const std_msgs::msg::String & msg) const {
-    RCLCPP_INFO(this->get_logger(), "I heard: '%s'", msg.data.c_str());
+void ThrusterManager::thruster_manager_callback(const std::list<int> & msg) const {
+    ThrusterManager::thruster_pwm = msg;
+    for (const auto& num : thruster_pwm) {
+        num * (400 - pwmLimit) + 1500;
+    }
+    // RCLCPP_INFO(this->get_logger(), "I heard: '%s'", std::to_string(msg.front()).c_str());
 }
 
 void ThrusterManager::timer_callback() {
-    auto message = std_msgs::msg::String();
-    message.data = "Hello, world! " + std::to_string(count++);
-    RCLCPP_INFO(this->get_logger(), "Publishing: '%s'", message.data.c_str());
-    publisher->publish(message);
+    
+    RCLCPP_INFO(this->get_logger(), "Publishing PWM List: '%s'", std::to_string(thruster_pwm.front()).c_str());
+    publisher->publish(thruster_pwm);
 }
 
 
