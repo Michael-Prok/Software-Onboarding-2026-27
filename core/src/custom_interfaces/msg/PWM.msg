@@ -1,0 +1,8 @@
+uint16 thruster_pwm_0
+uint16 thruster_pwm_1
+uint16 thruster_pwm_2
+uint16 thruster_pwm_3
+uint16 thruster_pwm_4
+uint16 thruster_pwm_5
+uint16 thruster_pwm_6
+uint16 thruster_pwm_7

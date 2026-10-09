@@ -3,19 +3,22 @@
 
 #include "rclcpp/rclcpp.hpp"
 
+#include "custom_interfaces/msg/pwm.hpp"
+#include "custom_interfaces/msg/thruster_values.hpp"
+
 class ThrusterManager : public rclcpp::Node {
 public:
     ThrusterManager();
 
 private:
-    void thruster_manager_callback(const std::list<int> & msg) const;
-    rclcpp::Subscription<std::list<int>>::SharedPtr subscription;
+    void thruster_manager_callback(const custom_interfaces::msg::ThrusterValues & msg) const;
+    rclcpp::Subscription<custom_interfaces::msg::ThrusterValues>::SharedPtr subscription;
 
-    std::list<int> thruster_pwm;
+    custom_interfaces::msg::ThrusterValues thruster_values;
     int pwmLimit = 200;
 
     void timer_callback();
-    rclcpp::Publisher<std::list<int>>::SharedPtr publisher;
+    rclcpp::Publisher<custom_interfaces::msg::PWM>::SharedPtr timer_manager;
     rclcpp::TimerBase::SharedPtr timer;
     std::chrono::time_point<std::chrono::steady_clock> most_recent_heartbeat;
 };
